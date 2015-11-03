@@ -85,10 +85,15 @@
   <ItemGroup>
     <Compile Include="Application\PedidoController.cs" />
     <Compile Include="Application\PizzaController.cs" />
-    <Compile Include="DAL\RestPizzaContext.cs" />
+    <Compile Include="DAL\RESTPizzaContext.cs" />
     <Compile Include="Domain\Enums.cs" />
     <Compile Include="Domain\Pedido.cs" />
     <Compile Include="Domain\Pizza.cs" />
+    <Compile Include="Domain\PizzaService.cs" />
+    <Compile Include="Migrations\201511032349009_CriacaoObjetos.cs" />
+    <Compile Include="Migrations\201511032349009_CriacaoObjetos.Designer.cs">
+      <DependentUpon>201511032349009_CriacaoObjetos.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -98,7 +103,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201511032349009_CriacaoObjetos.resx">
+      <DependentUpon>201511032349009_CriacaoObjetos.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

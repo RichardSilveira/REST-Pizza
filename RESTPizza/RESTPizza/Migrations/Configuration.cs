@@ -5,14 +5,14 @@ namespace RESTPizza.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<RESTPizza.DAL.RestPizzaContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<RESTPizza.DAL.RESTPizzaContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(RESTPizza.DAL.RestPizzaContext context)
+        protected override void Seed(RESTPizza.DAL.RESTPizzaContext context)
         {
             //  This method will be called after migrating to the latest version.
 
