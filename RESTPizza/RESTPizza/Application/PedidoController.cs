@@ -9,6 +9,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Omu.ValueInjecter;
 using RESTPizza.Application.HATEOAS;
+using System.Net;
 
 namespace RESTPizza.Application
 {
@@ -42,15 +43,23 @@ namespace RESTPizza.Application
         [ResponseType(typeof(PedidoDTO))]
         public IHttpActionResult Obter()
         {
-            var pedidos = _pedidoService.Obter().ToList();
+            var pedidosDTO = _pedidoService.Obter()
+                                    .Where(p=> p.Situacao == (int)Enums.SituacaoPedido.AguardandoAtendimento)
+                                    .ToList()
+                                    .Select(e => new PedidoDTO().InjectFrom(e))
+                                    .Cast<PedidoDTO>()
+                                    .Select(e => e.GerarLinks(_urlBase, PedidoEstadoAtualDaAplicacao.ObterPedido));
 
-            return Ok(pedidos);
+
+            return Ok(pedidosDTO);
         }
 
         [HttpPost]
         [ResponseType(typeof(PedidoDTO))]
         public IHttpActionResult Cadastrar(PedidoDTO pedidoDTO)
         {
+            _HATEOASManager = new PedidoHATEOASManager(_urlBase, PedidoEstadoAtualDaAplicacao.CadastrarPedido);
+
             List<string> errosValidacao;
 
             var pedido = new Pedido();
@@ -58,11 +67,33 @@ namespace RESTPizza.Application
 
             _pedidoService.RealizarNovo(pedido, out errosValidacao);
             pedidoDTO.InjectFrom(pedido);
+            pedidoDTO.Links = _HATEOASManager.ObterLinks(pedidoDTO);
 
             if (errosValidacao.Count == 0)
                 return Created(new Uri(_urlBase + pedidoDTO.PedidoID), pedidoDTO);
             else
                 return BadRequest(errosValidacao.Aggregate((a, b) => { return a + ", " + b; }));
+        }
+
+        [HttpPut]
+        [Route("~/api/pedido/{id}/aprovar")]
+        [ResponseType(typeof(PedidoDTO))]
+        public IHttpActionResult Aprovar(int id)
+        {
+            var pedido = _pedidoService.Aprovar(id);
+            var pedidoDTO = new PedidoDTO();
+            pedidoDTO.InjectFrom(pedido);
+
+            return Ok(pedido);
+        }
+
+        [HttpPut]
+        [Route("~/api/pedido/{id}/rejeitar")]
+        public IHttpActionResult Rejeitar(int id)
+        {
+            _pedidoService.Rejeitar(id);
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
     }
 }

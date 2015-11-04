@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,12 +40,43 @@ namespace RESTPizza.Domain
 
             if (erros.Count > 0) return;
 
-            pedido.Situacao = (int)Enums.SituacaoPedido.EmAtendimento;
-            //todo:Aplicar regra para calcular tempo estimado
+            pedido.Situacao = (int)Enums.SituacaoPedido.AguardandoAtendimento;
+
             _dbSet.Add(pedido);
             _context.SaveChanges();
         }
 
+        public Pedido Aprovar(int pedidoID)
+        {
+            var pedido = this.Obter().SingleOrDefault(p => p.PedidoID == pedidoID);
 
+            if (pedido == null)
+                throw new ObjectNotFoundException(string.Format(Mensagens.OBJETO_NAO_ENCONTRADO, "Pedido"));
+
+            pedido.Situacao = (int)Enums.SituacaoPedido.Aprovado;
+
+            //Total de pedidos que estão em atendimento * 30 minutos (tempo médio de conclusão)
+            pedido.TempoEstimado = this.Obter().Count(p => p.Situacao == (int)Enums.SituacaoPedido.Aprovado) * 30;
+
+            _context.Entry(pedido).State = EntityState.Modified;
+            _dbSet.Attach(pedido);
+            _context.SaveChanges();
+
+            return pedido;
+        }
+
+        public void Rejeitar(int pedidoID)
+        {
+            var pedido = this.Obter().SingleOrDefault(p => p.PedidoID == pedidoID);
+
+            if (pedido == null)
+                throw new ObjectNotFoundException(string.Format(Mensagens.OBJETO_NAO_ENCONTRADO, "Pedido"));
+
+            pedido.Situacao = (int)Enums.SituacaoPedido.Rejeitado;
+
+            _context.Entry(pedido).State = EntityState.Modified;
+            _dbSet.Attach(pedido);
+            _context.SaveChanges();
+        }
     }
 }

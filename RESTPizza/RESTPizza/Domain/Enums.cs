@@ -11,9 +11,8 @@ namespace RESTPizza.Domain
         public enum SituacaoPedido
         {
             AguardandoAtendimento = 1,
-            EmAtendimento,
+            Aprovado,
             Rejeitado
         }
     }
 }
-//todo:Talvez add um 'CanceladoPeloCliente'

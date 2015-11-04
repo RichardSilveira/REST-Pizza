@@ -88,6 +88,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\HATEOAS\HATEOASManagerExtensions.cs" />
     <Compile Include="Application\PedidoController.cs" />
     <Compile Include="Application\HATEOAS\PedidoHATEOASManager.cs" />
     <Compile Include="Application\PizzaController.cs" />

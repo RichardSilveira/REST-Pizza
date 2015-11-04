@@ -33,21 +33,35 @@ namespace RESTPizza.Application.HATEOAS
                         method = "GET",
                         href = _urlBase + pedidoDTO.PedidoID
                     });
-                    //todo:Add Url de confirmação e de rejeição (vai depender do status do pedido
+
+                    if (pedidoDTO.Situacao == (int)Enums.SituacaoPedido.AguardandoAtendimento)
+                    {
+                        links.Add(new Link()
+                        {
+                            rel = "aprovar",
+                            method = "PUT",
+                            href = _urlBase + pedidoDTO.PedidoID + "aprovar"
+                        });
+                        links.Add(new Link()
+                        {
+                            rel = "rejeitar",
+                            method = "PUT",
+                            href = _urlBase + pedidoDTO.PedidoID + "rejeitar"
+                        });
+                    }
                     break;
                 case PedidoEstadoAtualDaAplicacao.CadastrarPedido:
                     links.Add(new Link()
                     {
-                        rel = "url_aprovacao",
-                        method = "POST",
-                        href = _urlBase + pedidoDTO.PedidoID
+                        rel = "aprovar",
+                        method = "PUT",
+                        href = _urlBase + pedidoDTO.PedidoID + "aprovar"
                     });
-
                     links.Add(new Link()
                     {
-                        rel = "url_rejeicao",
-                        method = "POST",
-                        href = _urlBase + pedidoDTO.PedidoID
+                        rel = "rejeitar",
+                        method = "PUT",
+                        href = _urlBase + pedidoDTO.PedidoID + "rejeitar"
                     });
                     break;
 
@@ -57,7 +71,6 @@ namespace RESTPizza.Application.HATEOAS
 
             return links;
         }
-
     }
 
     public enum PedidoEstadoAtualDaAplicacao
@@ -65,4 +78,6 @@ namespace RESTPizza.Application.HATEOAS
         ObterPedido,
         CadastrarPedido
     }
+
+
 }
