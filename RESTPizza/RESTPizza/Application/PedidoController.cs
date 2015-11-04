@@ -30,13 +30,15 @@ namespace RESTPizza.Application
         [ResponseType(typeof(PedidoDTO))]
         public IHttpActionResult Obter(int id)
         {
-            _HATEOASManager = new PedidoHATEOASManager(_urlBase, PedidoEstadoAtualDaAplicacao.ObterPedido);
-
             var pedidoDTO = new PedidoDTO();
             var pedido = _pedidoService.Obter().Where(p => p.PedidoID == id).SingleOrDefault();
             pedidoDTO.InjectFrom(pedido);
 
-            pedidoDTO.Links = _HATEOASManager.ObterLinks(pedidoDTO);
+            _HATEOASManager = new PedidoHATEOASManager(_urlBase, PedidoEstadoAtualDaAplicacao.ObterPedidoUnico,
+                                                        pedidoDTO);
+
+            pedidoDTO.Links = _HATEOASManager.ObterLinks();
+
             return Ok(pedidoDTO);
         }
 
@@ -47,9 +49,9 @@ namespace RESTPizza.Application
             var pedidosDTO = _pedidoService.Obter()
                                     .Where(p => p.Situacao == (int)Enums.SituacaoPedido.AguardandoAtendimento)
                                     .ToList()
-                                    .Select(e => new PedidoDTO().InjectFrom(e))
-                                    .Cast<PedidoDTO>()
-                                    .Select(e => e.GerarLinks(_urlBase, PedidoEstadoAtualDaAplicacao.ObterPedido));
+                                    .Select(e => new PedidoItemDTO().InjectFrom(e))
+                                    .Cast<PedidoItemDTO>()
+                                    .Select(e => e.GerarLinks(_urlBase, PedidoEstadoAtualDaAplicacao.ObterPedidos));
 
 
             return Ok(pedidosDTO);
@@ -59,7 +61,6 @@ namespace RESTPizza.Application
         [ResponseType(typeof(PedidoDTO))]
         public IHttpActionResult Cadastrar(PedidoDTO pedidoDTO)
         {
-            _HATEOASManager = new PedidoHATEOASManager(_urlBase, PedidoEstadoAtualDaAplicacao.CadastrarPedido);
 
             List<string> errosValidacao;
 
@@ -68,7 +69,11 @@ namespace RESTPizza.Application
 
             _pedidoService.RealizarNovo(pedido, out errosValidacao);
             pedidoDTO.InjectFrom(pedido);
-            pedidoDTO.Links = _HATEOASManager.ObterLinks(pedidoDTO);
+
+            _HATEOASManager = new PedidoHATEOASManager(_urlBase, PedidoEstadoAtualDaAplicacao.CadastrarPedido,
+                                                        pedidoDTO);
+
+            pedidoDTO.Links = _HATEOASManager.ObterLinks();
 
             if (errosValidacao.Count == 0)
                 return Created(new Uri(_urlBase + pedidoDTO.PedidoID), pedidoDTO);
@@ -85,7 +90,7 @@ namespace RESTPizza.Application
             var pedidoDTO = new PedidoDTO();
             pedidoDTO.InjectFrom(pedido);
 
-            return Ok(pedido);
+            return Ok(pedidoDTO);
         }
 
         [HttpPut]

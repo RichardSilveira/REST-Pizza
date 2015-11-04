@@ -10,13 +10,13 @@ namespace RESTPizza.Application.HATEOAS
 {
     public static class HATEOASManagerExtensions
     {
-        public static PedidoDTO GerarLinks(this PedidoDTO pedidoDTO, string urlBase, PedidoEstadoAtualDaAplicacao estadoAtual)
+        public static PedidoItemDTO GerarLinks(this PedidoItemDTO pedidoItemDTO, string urlBase, PedidoEstadoAtualDaAplicacao estadoAtual)
         {
-            var pedidoHATEOAS = new PedidoHATEOASManager(urlBase, estadoAtual);
+            var pedidoHATEOAS = new PedidoHATEOASManager(urlBase, estadoAtual, pedidoItemDTO: pedidoItemDTO);
 
-            pedidoDTO.Links = pedidoHATEOAS.ObterLinks(pedidoDTO);
+            pedidoItemDTO.Links = pedidoHATEOAS.ObterLinks();
 
-            return pedidoDTO;
+            return pedidoItemDTO;
         }
     }
 }

@@ -88,6 +88,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\DTO\PedidoItemDTO.cs" />
     <Compile Include="Application\HATEOAS\HATEOASManagerExtensions.cs" />
     <Compile Include="Application\PedidoController.cs" />
     <Compile Include="Application\HATEOAS\PedidoHATEOASManager.cs" />
@@ -115,9 +116,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DAL\Migrations\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201511041835238_Migration.resx">
       <DependentUpon>201511041835238_Migration.cs</DependentUpon>
