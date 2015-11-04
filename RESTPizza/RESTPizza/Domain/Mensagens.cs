@@ -8,6 +8,7 @@ namespace RESTPizza.Domain
 {
     public static class Mensagens
     {
-        public static string CAMPO_NAO_INFORMADO = "Campo {0} não informado(a).";
+        public static string CAMPO_NAO_INFORMADO = "Campo {0} não informado(a)";
+        public static string OBJETO_NAO_INFORMADO = "{0} não informado(a)";
     }
 }

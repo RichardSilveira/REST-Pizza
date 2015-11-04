@@ -31,7 +31,7 @@ namespace RESTPizza.Domain
 
             if (pizza == null)
             {
-                erros.Add("A Pizza não foi informada.");
+                erros.Add(string.Format(Mensagens.OBJETO_NAO_INFORMADO, "Pizza"));
                 return;
             }
 

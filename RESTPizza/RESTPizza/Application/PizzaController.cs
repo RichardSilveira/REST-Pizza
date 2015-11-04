@@ -44,7 +44,7 @@ namespace RESTPizza.Application
 
             if (errosValidacao.Count == 0)
             {
-                var urlCompleta = ConfigurationManager.AppSettings["UrlPrincipalRaiz"] + @"/api/Pizza/" + pizza.PizzaID;
+                var urlCompleta = ConfigurationManager.AppSettings["UrlPrincipalRaiz"] + @"/api/pizza/" + pizza.PizzaID;
                 return Created(new Uri(urlCompleta), pizza);
             }
             else

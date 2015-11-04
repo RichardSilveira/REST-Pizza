@@ -90,6 +90,7 @@
     <Compile Include="Domain\Enums.cs" />
     <Compile Include="Domain\Mensagens.cs" />
     <Compile Include="Domain\Pedido.cs" />
+    <Compile Include="Domain\PedidoService.cs" />
     <Compile Include="Domain\Pizza.cs" />
     <Compile Include="Domain\PizzaService.cs" />
     <Compile Include="Migrations\201511032349009_CriacaoObjetos.cs" />
