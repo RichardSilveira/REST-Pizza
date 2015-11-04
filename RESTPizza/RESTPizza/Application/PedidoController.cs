@@ -7,28 +7,40 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Omu.ValueInjecter;
+using RESTPizza.Application.HATEOAS;
 
 namespace RESTPizza.Application
 {
     public class PedidoController : ApiController
     {
         public PedidoService _pedidoService { get; set; }
+        private string _urlBase;
+        private PedidoHATEOASManager _HATEOASManager;
 
         public PedidoController()
         {
+            _urlBase = ConfigurationManager.AppSettings["UrlPrincipalRaiz"] + @"/api/pedido/";
             _pedidoService = new PedidoService();
         }
 
-        [ResponseType(typeof(Pedido))]
-        public IHttpActionResult Get(int id)
+        [HttpGet]
+        [ResponseType(typeof(PedidoDTO))]
+        public IHttpActionResult Obter(int id)
         {
-            var pedido = _pedidoService.Obter().Where(p => p.PedidoID == id).SingleOrDefault();
+            _HATEOASManager = new PedidoHATEOASManager(_urlBase, PedidoEstadoAtualDaAplicacao.ObterPedido);
 
-            return Ok(pedido);
+            var pedidoDTO = new PedidoDTO();
+            var pedido = _pedidoService.Obter().Where(p => p.PedidoID == id).SingleOrDefault();
+            pedidoDTO.InjectFrom(pedido);
+
+            pedidoDTO.Links = _HATEOASManager.ObterLinks(pedidoDTO);
+            return Ok(pedidoDTO);
         }
 
-        [ResponseType(typeof(Pedido))]
-        public IHttpActionResult Get()
+        [HttpGet]
+        [ResponseType(typeof(PedidoDTO))]
+        public IHttpActionResult Obter()
         {
             var pedidos = _pedidoService.Obter().ToList();
 
@@ -36,21 +48,21 @@ namespace RESTPizza.Application
         }
 
         [HttpPost]
-        [ResponseType(typeof(Pizza))]
-        public IHttpActionResult Cadastrar(Pedido pedido)
+        [ResponseType(typeof(PedidoDTO))]
+        public IHttpActionResult Cadastrar(PedidoDTO pedidoDTO)
         {
             List<string> errosValidacao;
+
+            var pedido = new Pedido();
+            pedido.InjectFrom(pedidoDTO);
+
             _pedidoService.RealizarNovo(pedido, out errosValidacao);
+            pedidoDTO.InjectFrom(pedido);
 
             if (errosValidacao.Count == 0)
-            {
-                var urlCompleta = ConfigurationManager.AppSettings["UrlPrincipalRaiz"] + @"/api/pedido/" + pedido.PedidoID;
-                return Created(new Uri(urlCompleta), pedido);
-            }
+                return Created(new Uri(_urlBase + pedidoDTO.PedidoID), pedidoDTO);
             else
-            {
                 return BadRequest(errosValidacao.Aggregate((a, b) => { return a + ", " + b; }));
-            }
         }
     }
 }

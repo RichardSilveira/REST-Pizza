@@ -19,16 +19,18 @@ namespace RESTPizza.Application
             _pizzaService = new PizzaService();
         }
 
+        [HttpGet]
         [ResponseType(typeof(Pizza))]
-        public IHttpActionResult Get(int id)
+        public IHttpActionResult Obter(int id)
         {
             var pizza = _pizzaService.Obter().Where(p => p.PizzaID == id).SingleOrDefault();
 
             return Ok(pizza);
         }
 
+        [HttpGet]
         [ResponseType(typeof(Pizza))]
-        public IHttpActionResult Get()
+        public IHttpActionResult Obter()
         {
             var pizzas = _pizzaService.Obter().ToList();
 
