@@ -10,12 +10,13 @@ using System.Web.Http.Description;
 using Omu.ValueInjecter;
 using RESTPizza.Application.HATEOAS;
 using System.Net;
+using RESTPizza.Application.DTO;
 
 namespace RESTPizza.Application
 {
     public class PedidoController : ApiController
     {
-        public PedidoService _pedidoService { get; set; }
+        private PedidoService _pedidoService;
         private string _urlBase;
         private PedidoHATEOASManager _HATEOASManager;
 
@@ -40,11 +41,11 @@ namespace RESTPizza.Application
         }
 
         [HttpGet]
-        [ResponseType(typeof(PedidoDTO))]
+        [ResponseType(typeof(IEnumerable<PedidoDTO>))]
         public IHttpActionResult Obter()
         {
             var pedidosDTO = _pedidoService.Obter()
-                                    .Where(p=> p.Situacao == (int)Enums.SituacaoPedido.AguardandoAtendimento)
+                                    .Where(p => p.Situacao == (int)Enums.SituacaoPedido.AguardandoAtendimento)
                                     .ToList()
                                     .Select(e => new PedidoDTO().InjectFrom(e))
                                     .Cast<PedidoDTO>()

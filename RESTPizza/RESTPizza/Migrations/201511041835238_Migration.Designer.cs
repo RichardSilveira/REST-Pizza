@@ -7,13 +7,13 @@ namespace RESTPizza.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class CriacaoObjetos : IMigrationMetadata
+    public sealed partial class Migration : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(CriacaoObjetos));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Migration));
         
         string IMigrationMetadata.Id
         {
-            get { return "201511032349009_CriacaoObjetos"; }
+            get { return "201511041835238_Migration"; }
         }
         
         string IMigrationMetadata.Source

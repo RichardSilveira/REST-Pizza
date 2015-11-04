@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RESTPizza.Domain
+namespace RESTPizza.Application.HATEOAS
 {
     public class Link
     {

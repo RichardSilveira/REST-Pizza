@@ -1,4 +1,5 @@
-﻿using RESTPizza.Domain;
+﻿using RESTPizza.Application.DTO;
+using RESTPizza.Domain;
 using System;
 using System.Collections.Generic;
 using System.Configuration;

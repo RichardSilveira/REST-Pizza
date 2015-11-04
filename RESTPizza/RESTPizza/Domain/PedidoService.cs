@@ -38,6 +38,12 @@ namespace RESTPizza.Domain
             if (pedido.PizzaID <= 0)
                 erros.Add(string.Format(Mensagens.CAMPO_NAO_INFORMADO, "Pizza"));
 
+            if (string.IsNullOrEmpty(pedido.NomeCliente))
+                erros.Add(string.Format(Mensagens.CAMPO_NAO_INFORMADO, "Nome do Cliente"));
+
+            if (string.IsNullOrEmpty(pedido.TelefoneCliente))
+                erros.Add(string.Format(Mensagens.CAMPO_NAO_INFORMADO, "Telefone do Cliente"));
+
             if (erros.Count > 0) return;
 
             pedido.Situacao = (int)Enums.SituacaoPedido.AguardandoAtendimento;

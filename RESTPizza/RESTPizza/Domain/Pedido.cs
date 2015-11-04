@@ -12,6 +12,12 @@ namespace RESTPizza.Domain
         [Key]
         public int PedidoID { get; set; }
 
+        [Required]
+        public string NomeCliente { get; set; }
+
+        [Required]
+        public string TelefoneCliente { get; set; }
+
         public string SenhaEspera { get; set; }
 
         public decimal? TempoEstimado { get; set; }
@@ -25,4 +31,3 @@ namespace RESTPizza.Domain
         public virtual Pizza Pizza { get; set; }
     }
 }
-//todo:próximo passo:Adicionar cliente ao pedido

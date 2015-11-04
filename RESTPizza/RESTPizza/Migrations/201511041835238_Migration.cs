@@ -3,7 +3,7 @@ namespace RESTPizza.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class CriacaoObjetos : DbMigration
+    public partial class Migration : DbMigration
     {
         public override void Up()
         {
@@ -12,6 +12,8 @@ namespace RESTPizza.Migrations
                 c => new
                     {
                         PedidoID = c.Int(nullable: false, identity: true),
+                        NomeCliente = c.String(nullable: false),
+                        TelefoneCliente = c.String(nullable: false),
                         SenhaEspera = c.String(),
                         TempoEstimado = c.Decimal(precision: 18, scale: 2),
                         Situacao = c.Int(nullable: false),

@@ -94,16 +94,17 @@
     <Compile Include="Application\PizzaController.cs" />
     <Compile Include="DAL\RESTPizzaContext.cs" />
     <Compile Include="Domain\Enums.cs" />
-    <Compile Include="Domain\Link.cs" />
+    <Compile Include="Application\HATEOAS\Link.cs" />
     <Compile Include="Domain\Mensagens.cs" />
     <Compile Include="Domain\Pedido.cs" />
-    <Compile Include="Domain\PedidoDTO.cs" />
+    <Compile Include="Application\DTO\PedidoDTO.cs" />
     <Compile Include="Domain\PedidoService.cs" />
     <Compile Include="Domain\Pizza.cs" />
+    <Compile Include="Application\DTO\PizzaDTO.cs" />
     <Compile Include="Domain\PizzaService.cs" />
-    <Compile Include="Migrations\201511032349009_CriacaoObjetos.cs" />
-    <Compile Include="Migrations\201511032349009_CriacaoObjetos.Designer.cs">
-      <DependentUpon>201511032349009_CriacaoObjetos.cs</DependentUpon>
+    <Compile Include="Migrations\201511041835238_Migration.cs" />
+    <Compile Include="Migrations\201511041835238_Migration.Designer.cs">
+      <DependentUpon>201511041835238_Migration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
@@ -115,8 +116,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201511032349009_CriacaoObjetos.resx">
-      <DependentUpon>201511032349009_CriacaoObjetos.cs</DependentUpon>
+    <Folder Include="DAL\Migrations\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201511041835238_Migration.resx">
+      <DependentUpon>201511041835238_Migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

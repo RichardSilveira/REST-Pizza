@@ -14,8 +14,7 @@ namespace RESTPizza.DAL
         public DbSet<Pizza> Pizzas { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }
 
-        //public RestPizzaContext() : base(@"Data Source=.\SQLEXPRESS;Initial Catalog=DemoForMoqHelper;Integrated Security=true;")
-        public RESTPizzaContext() : base(@"Data Source=""127.0.0.1, 1433"";Initial Catalog=RESTPizza;User ID=sa;Password=123456")
+        public RESTPizzaContext() : base("RESTPizzaContext")
         {
 
         }

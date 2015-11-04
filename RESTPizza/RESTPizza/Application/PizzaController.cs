@@ -7,52 +7,60 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Omu.ValueInjecter;
+using RESTPizza.Application.DTO;
 
 namespace RESTPizza.Application
 {
     public class PizzaController : ApiController
     {
-        public PizzaService _pizzaService { get; set; }
+        private PizzaService _pizzaService;
+        private string _urlBase;
 
         public PizzaController()
         {
+            _urlBase = ConfigurationManager.AppSettings["UrlPrincipalRaiz"] + @"/api/pizza/";
             _pizzaService = new PizzaService();
         }
 
         [HttpGet]
-        [ResponseType(typeof(Pizza))]
+        [ResponseType(typeof(PizzaDTO))]
         public IHttpActionResult Obter(int id)
         {
             var pizza = _pizzaService.Obter().Where(p => p.PizzaID == id).SingleOrDefault();
+            var pizzaDTO = new PizzaDTO().InjectFrom(pizza);
 
-            return Ok(pizza);
+            return Ok(pizzaDTO);
         }
 
         [HttpGet]
-        [ResponseType(typeof(Pizza))]
+        [ResponseType(typeof(IEnumerable<PizzaDTO>))]
         public IHttpActionResult Obter()
         {
-            var pizzas = _pizzaService.Obter().ToList();
+            var pizzas = _pizzaService.Obter()
+                                .ToList()
+                                .Select(e => new PizzaDTO().InjectFrom(e))
+                                .Cast<PizzaDTO>();
 
             return Ok(pizzas);
         }
 
         [HttpPost]
-        [ResponseType(typeof(Pizza))]
-        public IHttpActionResult Cadastrar(Pizza pizza)
+        [ResponseType(typeof(PizzaDTO))]
+        public IHttpActionResult Cadastrar(PizzaDTO pizzaDTO)
         {
             List<string> errosValidacao;
+
+            var pizza = new Pizza();
+            pizza.InjectFrom(pizzaDTO);
+
             _pizzaService.Cadastrar(pizza, out errosValidacao);
+            pizzaDTO.InjectFrom(pizza);
 
             if (errosValidacao.Count == 0)
-            {
-                var urlCompleta = ConfigurationManager.AppSettings["UrlPrincipalRaiz"] + @"/api/pizza/" + pizza.PizzaID;
-                return Created(new Uri(urlCompleta), pizza);
-            }
+                return Created(new Uri(_urlBase + pizzaDTO.PizzaID), pizzaDTO);
             else
-            {
                 return BadRequest(errosValidacao.Aggregate((a, b) => { return a + ", " + b; }));
-            }
         }
     }
 }
