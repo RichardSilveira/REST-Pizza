@@ -1,6 +1,7 @@
 ﻿using Microsoft.Owin.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace RESTPizza
         {
             StringBuilder mensagensUsuario = new StringBuilder();
 
-            string baseUri = "http://localhost:1234";
+            string baseUri = ConfigurationManager.AppSettings["UrlPrincipalRaiz"].ToString();
 
             Console.WriteLine("Iniciando web server do REST Pizza");
 

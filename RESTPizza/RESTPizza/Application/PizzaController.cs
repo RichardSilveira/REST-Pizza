@@ -1,6 +1,7 @@
 ﻿using RESTPizza.Domain;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,11 +20,37 @@ namespace RESTPizza.Application
         }
 
         [ResponseType(typeof(Pizza))]
+        public IHttpActionResult Get(int id)
+        {
+            var pizza = _pizzaService.Obter().Where(p => p.PizzaID == id).SingleOrDefault();
+
+            return Ok(pizza);
+        }
+
+        [ResponseType(typeof(Pizza))]
         public IHttpActionResult Get()
         {
-            var pizzas = _pizzaService.Obter();
+            var pizzas = _pizzaService.Obter().ToList();
 
             return Ok(pizzas);
+        }
+
+        [HttpPost]
+        [ResponseType(typeof(Pizza))]
+        public IHttpActionResult Cadastrar(Pizza pizza)
+        {
+            List<string> errosValidacao;
+            _pizzaService.Cadastrar(pizza, out errosValidacao);
+
+            if (errosValidacao.Count == 0)
+            {
+                var urlCompleta = ConfigurationManager.AppSettings["UrlPrincipalRaiz"] + @"/api/Pizza/" + pizza.PizzaID;
+                return Created(new Uri(urlCompleta), pizza);
+            }
+            else
+            {
+                return BadRequest(errosValidacao.Aggregate((a, b) => { return a + ", " + b; }));
+            }
         }
     }
 }
