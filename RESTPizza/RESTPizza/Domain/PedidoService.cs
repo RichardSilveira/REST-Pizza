@@ -64,6 +64,7 @@ namespace RESTPizza.Domain
             //Total de pedidos que estão em atendimento * 30 minutos (tempo médio de conclusão)
             pedido.TempoEstimado = this.Obter().Count(p => p.Situacao == (int)Enums.SituacaoPedido.AguardandoAtendimento && p.PedidoID <= pedidoID) * 30;
 
+            pedido.SenhaEspera = new Random().Next(10, 20);
             _dbSet.Attach(pedido);
             _context.Entry(pedido).State = EntityState.Modified;
             _context.SaveChanges();
@@ -80,6 +81,7 @@ namespace RESTPizza.Domain
 
             pedido.Situacao = (int)Enums.SituacaoPedido.Rejeitado;
             pedido.TempoEstimado = null;
+
             _dbSet.Attach(pedido);
             _context.Entry(pedido).State = EntityState.Modified;
             _context.SaveChanges();

@@ -18,7 +18,7 @@ namespace RESTPizza.Domain
         [Required]
         public string TelefoneCliente { get; set; }
 
-        public string SenhaEspera { get; set; }
+        public int? SenhaEspera { get; set; }
 
         public decimal? TempoEstimado { get; set; }
 

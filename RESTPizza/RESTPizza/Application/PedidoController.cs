@@ -61,7 +61,6 @@ namespace RESTPizza.Application
         [ResponseType(typeof(PedidoDTO))]
         public IHttpActionResult Cadastrar(PedidoDTO pedidoDTO)
         {
-
             List<string> errosValidacao;
 
             var pedido = new Pedido();
