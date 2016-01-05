@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Routing;
-using Swashbuckle.Application;
 
 namespace RESTPizza
 {
@@ -20,16 +19,12 @@ namespace RESTPizza
         public Startup()
         {
             _configuration = new HttpConfiguration();
-
         }
 
         public void Configuration(IAppBuilder app)
         {
             ConfigureWebApi();
             ConfigureJsonFormatter();
-
-            _configuration.EnableSwagger(c => c.SingleApiVersion("v1", "A title for your API"))
-    .EnableSwaggerUi();
 
             app.UseWebApi(_configuration);
         }

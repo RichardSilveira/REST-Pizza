@@ -23,6 +23,11 @@ namespace RESTPizza.Application
             _pizzaService = new PizzaService();
         }
 
+        /// <summary>
+        /// nivi
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         [ResponseType(typeof(PizzaDTO))]
         public IHttpActionResult Obter(int id)
