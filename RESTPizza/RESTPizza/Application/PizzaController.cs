@@ -24,10 +24,10 @@ namespace RESTPizza.Application
         }
 
         /// <summary>
-        /// nivi
+        /// Obter pizza
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <remarks>Obtém uma pizza</remarks>
+        /// <param name="id">ID da pizza</param>
         [HttpGet]
         [ResponseType(typeof(PizzaDTO))]
         public IHttpActionResult Obter(int id)

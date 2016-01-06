@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Routing;
 using Swashbuckle.Application;
-
 namespace RESTPizza
 {
     public class Startup
@@ -28,10 +27,19 @@ namespace RESTPizza
             ConfigureWebApi();
             ConfigureJsonFormatter();
 
-            _configuration.EnableSwagger(c => c.SingleApiVersion("v1", "A title for your API"))
-    .EnableSwaggerUi();
+            _configuration.EnableSwagger(c =>
+            {
+                c.SingleApiVersion("v1", "REST Pizza");
+                c.IncludeXmlComments(GetXmlCommentsPath());
+            }).EnableSwaggerUi();
 
             app.UseWebApi(_configuration);
+        }
+
+        protected static string GetXmlCommentsPath()
+        {
+            return System.String.Format(@"{0}\RESTPizza.XML",
+                    System.AppDomain.CurrentDomain.BaseDirectory);
         }
 
         private void ConfigureWebApi()
