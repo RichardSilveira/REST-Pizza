@@ -47,7 +47,7 @@ namespace RESTPizza.Application
         }
 
         /// <summary>
-        /// Obtém todas as pizzas
+        /// Obter lista de pizzas
         /// </summary>
         /// <remarks>Obtém todas as pizzas cadastradas</remarks>
         [SwaggerResponseRemoveDefaults]
@@ -56,15 +56,15 @@ namespace RESTPizza.Application
         [HttpGet]
         public IHttpActionResult Obter()
         {
-            var pizzas = _pizzaService.Obter()
+            var pizzasDTO = _pizzaService.Obter()
                                 .ToList()
                                 .Select(e => new PizzaDTO().InjectFrom(e))
                                 .Cast<PizzaDTO>();
 
-            if (pizzas == null)
+            if (pizzasDTO == null)
                 return NotFound();
 
-            return Ok(pizzas);
+            return Ok(pizzasDTO);
         }
 
         /// <summary>
