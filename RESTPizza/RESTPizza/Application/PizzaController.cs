@@ -9,6 +9,8 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Omu.ValueInjecter;
 using RESTPizza.Application.DTO;
+using Swashbuckle.Swagger.Annotations;
+using System.Net;
 
 namespace RESTPizza.Application
 {
@@ -28,18 +30,30 @@ namespace RESTPizza.Application
         /// </summary>
         /// <remarks>Obtém uma pizza</remarks>
         /// <param name="id">ID da pizza</param>
+        [SwaggerResponseRemoveDefaults]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
+        [SwaggerResponse(HttpStatusCode.OK, type: typeof(PizzaDTO))]
         [HttpGet]
-        [ResponseType(typeof(PizzaDTO))]
         public IHttpActionResult Obter(int id)
         {
             var pizza = _pizzaService.Obter().Where(p => p.PizzaID == id).SingleOrDefault();
+
+            if (pizza == null)
+                return NotFound();
+
             var pizzaDTO = new PizzaDTO().InjectFrom(pizza);
 
             return Ok(pizzaDTO);
         }
 
+        /// <summary>
+        /// Obtém todas as pizzas
+        /// </summary>
+        /// <remarks>Obtém todas as pizzas cadastradas</remarks>
+        [SwaggerResponseRemoveDefaults]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
+        [SwaggerResponse(HttpStatusCode.OK, type: typeof(IEnumerable<PizzaDTO>))]
         [HttpGet]
-        [ResponseType(typeof(IEnumerable<PizzaDTO>))]
         public IHttpActionResult Obter()
         {
             var pizzas = _pizzaService.Obter()
@@ -47,11 +61,21 @@ namespace RESTPizza.Application
                                 .Select(e => new PizzaDTO().InjectFrom(e))
                                 .Cast<PizzaDTO>();
 
+            if (pizzas == null)
+                return NotFound();
+
             return Ok(pizzas);
         }
 
+        /// <summary>
+        /// Cadastrar pizza
+        /// </summary>
+        /// <remarks>Cadastra uma nova pizza</remarks>
+        /// <param name="pizzaDTO">pizza a ser cadastrada</param>
+        [SwaggerResponseRemoveDefaults]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
+        [SwaggerResponse(HttpStatusCode.Created, type: typeof(PizzaDTO))]
         [HttpPost]
-        [ResponseType(typeof(PizzaDTO))]
         public IHttpActionResult Cadastrar(PizzaDTO pizzaDTO)
         {
             List<string> errosValidacao;
