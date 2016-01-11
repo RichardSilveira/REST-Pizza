@@ -27,6 +27,5 @@ namespace RESTPizza
             Console.WriteLine(mensagensUsuario.ToString());
             Console.ReadLine();
         }
-
     }
 }
