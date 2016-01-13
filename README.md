@@ -12,14 +12,9 @@ Para que o foco seja mantido em como REST pode ser implementado na prática, que
 A aplicação conta com duas entidades de domínio principais, que são “Pizza” e “Pedido” e no próprio pedido vão os dados inerentes ao cliente associado a ele.
 
 ## Pré-requisitos
-Instância ativa do SQL Server Express 2012 (software livre) ou posterior.
-
-Aplicativo que auxilie na execução de requisições REST, de preferência o POSTMAN, pois com ele será permitido importar esses passos que podem ser acessados através do arquivo “RESTPizza.json.postman_collection”.
+Aplicativo que auxilie na execução de requisições REST, de preferência o POSTMAN, pois com ele será permitido importar esses passos que podem ser acessados através do arquivo “RESTPizza.json.postman_collection” no diretório raíz do repositório git.
 
 Visual Studio Express 2013 (software livre) ou posterior.
 
 ## Como executar a aplicação
-Após fazer o download do código fonte e abrí-lo com o Visual Studio Express, vá até o arquivo "App.config" e altere os dados da conexão de acordo com o seu de banco de dados, feito isso, 
-na aba "Package Manager Console" execute o comando "Update-Database" para que o catálogo do banco de dados e suas tabelas sejam criadas automaticamente.
-
 Por tratar-se de uma aplicação "self-hosted", que utiliza o padrão "Owin", basta compilar e executar o projeto "RESTPizza", mesmo ele sendo do tipo "Console Application" que um servidor web local será iniciado na porta "1234" pronto para ser acessado através de requisições REST.
