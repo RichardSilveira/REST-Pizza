@@ -16,7 +16,7 @@ namespace RESTPizza.DAL
 
         public RESTPizzaContext() : base("RESTPizzaContext")
         {
-
+            //Database.SetInitializer<RESTPizzaContext>(new CreateDatabaseIfNotExists<RESTPizzaContext>());
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
